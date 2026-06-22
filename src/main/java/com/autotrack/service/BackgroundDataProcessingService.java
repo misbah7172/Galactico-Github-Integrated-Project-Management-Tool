@@ -72,6 +72,28 @@ public class BackgroundDataProcessingService {
     }
 
     /**
+     * Process non-aggregate commit insights asynchronously after webhook contribution totals are updated.
+     */
+    @Async
+    @Transactional
+    public CompletableFuture<Void> processCommitInsightsAsync(Commit commit) {
+        try {
+            logger.info("Starting async insight processing for commit: {}", commit.getSha());
+
+            List<FileChangeMetrics> fileChanges = fileChangeMetricsRepository.findByCommitId(commit.getId());
+            for (FileChangeMetrics fileChange : fileChanges) {
+                processFileChangeMetrics(fileChange);
+            }
+
+            triggerCommitNotifications(commit);
+            logger.info("Completed async insight processing for commit: {}", commit.getSha());
+        } catch (Exception e) {
+            logger.error("Error processing commit insights async: {}", commit.getSha(), e);
+        }
+
+        return CompletableFuture.completedFuture(null);
+    }
+    /**
      * Process file change metrics to extract additional insights.
      */
     private void processFileChangeMetrics(FileChangeMetrics fileChange) {

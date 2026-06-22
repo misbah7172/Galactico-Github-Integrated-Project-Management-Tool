@@ -54,9 +54,13 @@ public class WebhookController {
             switch (event) {
                 case "push":
                     // Handle push events for commit tracking
-                    webhookService.processWebhook(payload, signature);
+                    WebhookService.WebhookProcessingResult result = webhookService.processWebhook(payload, signature);
                     return ResponseEntity.status(HttpStatus.OK)
-                            .body("Push webhook processed successfully");
+                            .body("Push webhook processed successfully: received=" + result.getReceivedCommits()
+                                    + ", saved=" + result.getSavedCommits()
+                                    + ", duplicates=" + result.getDuplicateCommits()
+                                    + ", skipped=" + result.getSkippedCommits()
+                                    + ", contributionsUpdated=" + result.getContributionsUpdated());
                             
                 case "workflow_run":
                     // Handle GitHub Actions workflow run events for CI/CD status
