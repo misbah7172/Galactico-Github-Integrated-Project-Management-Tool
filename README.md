@@ -44,8 +44,8 @@ Galactico is a full-stack project management platform built for software develop
 
 - Docker Desktop
 - A GitHub OAuth App (Settings > Developer Settings > OAuth Apps)
-  - Homepage URL: `http://localhost:5000`  
-  - Callback URL: `http://localhost:5000/login/oauth2/code/github`
+  - Homepage URL: `https://brings-broadcasting-tucson-fioricet.trycloudflare.com`  
+  - Callback URL: `https://brings-broadcasting-tucson-fioricet.trycloudflare.com/login/oauth2/code/github`
 
 ### 1. Configure environment
 
@@ -64,8 +64,8 @@ ENCRYPTION_KEY=exactly_32_character_key_here!!!
 DB_NAME=galactico
 DB_USERNAME=galactico
 DB_PASSWORD=galactico_secret
-BASE_URL=http://localhost:5000
-OAUTH_REDIRECT_URI=http://localhost:5000/login/oauth2/code/github
+BASE_URL=https://brings-broadcasting-tucson-fioricet.trycloudflare.com
+OAUTH_REDIRECT_URI=https://brings-broadcasting-tucson-fioricet.trycloudflare.com/login/oauth2/code/github
 ```
 
 ### 2. Start the stack
@@ -76,7 +76,7 @@ docker-compose up --build -d
 
 ### 3. Open the application
 
-Navigate to `http://localhost:5000` and log in with GitHub.
+Navigate to `https://brings-broadcasting-tucson-fioricet.trycloudflare.com` and log in with GitHub.
 
 ### Services
 
@@ -122,7 +122,7 @@ Set `galactico.baseUrl` in VS Code settings to point at your running Galactico i
 
 ```json
 {
-  "galactico.baseUrl": "http://localhost:5000"
+  "galactico.baseUrl": "https://brings-broadcasting-tucson-fioricet.trycloudflare.com"
 }
 ```
 

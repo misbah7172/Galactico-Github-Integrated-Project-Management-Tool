@@ -19,7 +19,7 @@ public class MultiLanguagePipelineGenerator {
         StringBuilder workflow = new StringBuilder();
         
         // Workflow header
-        workflow.append("name: ").append(config.getProjectName()).append(" CI/CD Pipeline\n\n");
+        workflow.append("name: Multi-Language CI/CD Pipeline\n\n");
         
         // Triggers
         generateTriggers(workflow);
@@ -39,13 +39,14 @@ public class MultiLanguagePipelineGenerator {
                 generateMicroservicesJobs(workflow, config);
                 break;
             case "full-stack":
+            case "fullstack":
                 generateFullStackJobs(workflow, config);
                 break;
             case "extension":
                 generateExtensionJobs(workflow, config);
                 break;
             default:
-                generateDefaultJobs(workflow, config);
+                throw new IllegalArgumentException("Unknown project architecture: " + config.getProjectArchitecture());
         }
         
         return workflow.toString();
@@ -63,6 +64,7 @@ public class MultiLanguagePipelineGenerator {
     private void generateEnvironmentVariables(StringBuilder workflow, MultiLanguageCICDConfigDTO config) {
         workflow.append("env:\n");
         workflow.append("  PROJECT_NAME: ").append(config.getProjectName()).append("\n");
+        workflow.append("  PROJECT_ARCHITECTURE: ").append(config.getProjectArchitecture()).append("\n");
         
         if (config.getEnvironmentVariables() != null) {
             config.getEnvironmentVariables().forEach((key, value) -> 
@@ -153,7 +155,7 @@ public class MultiLanguagePipelineGenerator {
         
         // Frontend job
         if (!frontendComponents.isEmpty()) {
-            workflow.append("  frontend:\n");
+            workflow.append("  frontend-build:\n");
             workflow.append("    runs-on: ubuntu-latest\n");
             workflow.append("    steps:\n");
             workflow.append("    - uses: actions/checkout@v4\n\n");
@@ -166,7 +168,7 @@ public class MultiLanguagePipelineGenerator {
         
         // Backend job
         if (!backendComponents.isEmpty()) {
-            workflow.append("  backend:\n");
+            workflow.append("  backend-build:\n");
             workflow.append("    runs-on: ubuntu-latest\n");
             workflow.append("    steps:\n");
             workflow.append("    - uses: actions/checkout@v4\n\n");
@@ -182,8 +184,8 @@ public class MultiLanguagePipelineGenerator {
             workflow.append("  deploy:\n");
             workflow.append("    needs: [");
             List<String> dependencies = new ArrayList<>();
-            if (!frontendComponents.isEmpty()) dependencies.add("frontend");
-            if (!backendComponents.isEmpty()) dependencies.add("backend");
+            if (!frontendComponents.isEmpty()) dependencies.add("frontend-build");
+            if (!backendComponents.isEmpty()) dependencies.add("backend-build");
             workflow.append(String.join(", ", dependencies));
             workflow.append("]\n");
             workflow.append("    runs-on: ubuntu-latest\n");
@@ -222,7 +224,7 @@ public class MultiLanguagePipelineGenerator {
         switch (mainComponent.getLanguage().toLowerCase()) {
             case "typescript":
             case "javascript":
-                workflow.append("        npm run package\n");
+                workflow.append("        vsce package\n");
                 break;
             default:
                 if (mainComponent.getBuildCommand() != null) {
@@ -254,6 +256,7 @@ public class MultiLanguagePipelineGenerator {
         
         switch (language) {
             case "nodejs":
+            case "node_js":
             case "react":
             case "typescript":
             case "javascript":
@@ -393,6 +396,6 @@ public class MultiLanguagePipelineGenerator {
     }
     
     private boolean isBackendLanguage(String language) {
-        return Arrays.asList("nodejs", "python", "java", "spring-boot", "php", "go", "rust").contains(language.toLowerCase());
+        return Arrays.asList("nodejs", "node_js", "python", "java", "spring-boot", "spring_boot", "php", "go", "rust").contains(language.toLowerCase());
     }
 }

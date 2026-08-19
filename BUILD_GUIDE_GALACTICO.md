@@ -114,8 +114,8 @@ Galactico/
 ### Prerequisites
 - Docker Desktop installed
 - GitHub OAuth App created (Settings → Developer Settings → OAuth Apps)
-  - Homepage URL: `http://localhost:5000`
-  - Callback URL: `http://localhost:5000/login/oauth2/code/github`
+  - Homepage URL: `https://brings-broadcasting-tucson-fioricet.trycloudflare.com`
+  - Callback URL: `https://brings-broadcasting-tucson-fioricet.trycloudflare.com/login/oauth2/code/github`
 
 ### 1. Create `.env` file in project root
 
@@ -134,9 +134,9 @@ JWT_SECRET=your_jwt_secret_key_minimum_32_characters_long
 ENCRYPTION_KEY=your_encryption_key_32_chars_here
 
 # Application URLs
-APP_BASE_URL=http://localhost:5000
-BASE_URL=http://localhost:5000
-OAUTH_REDIRECT_URI=http://localhost:5000/login/oauth2/code/github
+APP_BASE_URL=https://brings-broadcasting-tucson-fioricet.trycloudflare.com
+BASE_URL=https://brings-broadcasting-tucson-fioricet.trycloudflare.com
+OAUTH_REDIRECT_URI=https://brings-broadcasting-tucson-fioricet.trycloudflare.com/login/oauth2/code/github
 
 # Email (optional - Gmail SMTP)
 SPRING_MAIL_HOST=smtp.gmail.com
@@ -153,7 +153,7 @@ docker-compose up --build -d
 
 ### 3. Access the application
 
-- **Web App**: http://localhost:5000
+- **Web App**: https://brings-broadcasting-tucson-fioricet.trycloudflare.com
 - **PostgreSQL**: localhost:5433 (external port)
 
 ### Docker Services
@@ -1044,7 +1044,7 @@ spring.datasource.hikari.connection-timeout=20000
 spring.security.oauth2.client.registration.github.client-id=${GITHUB_CLIENT_ID}
 spring.security.oauth2.client.registration.github.client-secret=${GITHUB_CLIENT_SECRET}
 spring.security.oauth2.client.registration.github.scope=read:user,user:email
-spring.security.oauth2.client.registration.github.redirect-uri=${OAUTH_REDIRECT_URI:http://localhost:5000/login/oauth2/code/github}
+spring.security.oauth2.client.registration.github.redirect-uri=${OAUTH_REDIRECT_URI:https://brings-broadcasting-tucson-fioricet.trycloudflare.com/login/oauth2/code/github}
 
 # Session — persistent cookie survives browser close, 7-day timeout
 server.servlet.session.timeout=7d
@@ -1192,7 +1192,7 @@ Feature02 : user dashboard -> jane_smith -> in-progress
    java -jar target/galactico-*.jar
    ```
 
-4. **Access**: http://localhost:5000
+4. **Access**: https://brings-broadcasting-tucson-fioricet.trycloudflare.com
 
 ---
 

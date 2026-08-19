@@ -86,8 +86,8 @@ The extension connects to your Galactico web application. Configure the base URL
 
 | Scenario | Base URL |
 |---|---|
-| Local development | `http://localhost:5000` |
-| Docker (default) | `http://localhost:5000` |
+| Local development | `https://brings-broadcasting-tucson-fioricet.trycloudflare.com` |
+| Docker (default) | `https://brings-broadcasting-tucson-fioricet.trycloudflare.com` |
 | Azure deployment | `https://galactico-app.azurewebsites.net` |
 | Custom server | Your server URL |
 

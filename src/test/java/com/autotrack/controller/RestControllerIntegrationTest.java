@@ -15,7 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Integration test to validate REST controller beans are properly created and injected.
  */
-@SpringBootTest
+@SpringBootTest(properties = {
+    "spring.sql.init.mode=never",
+    "spring.datasource.initialization-mode=never",
+    "spring.jpa.hibernate.ddl-auto=create-drop"
+})
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class RestControllerIntegrationTest {
 

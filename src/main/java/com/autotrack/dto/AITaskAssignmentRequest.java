@@ -21,6 +21,8 @@ public class AITaskAssignmentRequest {
     
     private Double minCapacityThreshold = 0.2;  // Only consider members with at least 20% capacity
     
+    private Boolean useAiModel = true;
+
     public AITaskAssignmentRequest() {}
 
     public Long getTaskId() { return taskId; }
@@ -43,4 +45,7 @@ public class AITaskAssignmentRequest {
 
     public Double getMinCapacityThreshold() { return minCapacityThreshold; }
     public void setMinCapacityThreshold(Double minCapacityThreshold) { this.minCapacityThreshold = minCapacityThreshold; }
+
+    public Boolean getUseAiModel() { return useAiModel; }
+    public void setUseAiModel(Boolean useAiModel) { this.useAiModel = useAiModel; }
 }

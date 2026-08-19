@@ -40,6 +40,7 @@ public class AITaskAssignmentService {
     private final TaskService taskService;
     private final NotificationService notificationService;
     private final SlackService slackService;
+    private final QwenAIService qwenAIService;
 
     public AITaskAssignmentService(TaskRepository taskRepository,
                                    ProjectRepository projectRepository,
@@ -49,7 +50,8 @@ public class AITaskAssignmentService {
                                    AIAssignmentDecisionRepository decisionRepository,
                                    TaskService taskService,
                                    NotificationService notificationService,
-                                   SlackService slackService) {
+                                   SlackService slackService,
+                                   QwenAIService qwenAIService) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
@@ -59,6 +61,7 @@ public class AITaskAssignmentService {
         this.taskService = taskService;
         this.notificationService = notificationService;
         this.slackService = slackService;
+        this.qwenAIService = qwenAIService;
     }
 
     /**
@@ -91,7 +94,49 @@ public class AITaskAssignmentService {
         String requestId = UUID.randomUUID().toString();
 
         // 4. Analyze task requirements and match against member expertise
-        List<CandidateAnalysis> candidates = analyzeCandidates(task, project, scores, request);
+        List<CandidateAnalysis> candidates = new ArrayList<>();
+        boolean usedQwen = false;
+
+        if (request.getUseAiModel() != null && request.getUseAiModel() && qwenAIService.isConfigured()) {
+            Optional<QwenAIService.QwenAssignmentResult> qwenResultOpt = qwenAIService.recommendAssignee(task, scores);
+            if (qwenResultOpt.isPresent()) {
+                QwenAIService.QwenAssignmentResult qwenResult = qwenResultOpt.get();
+                if (qwenResult.getRecommendations() != null && !qwenResult.getRecommendations().isEmpty()) {
+                    for (QwenAIService.QwenRecommendation rec : qwenResult.getRecommendations()) {
+                        ContributionScore cs = scores.stream()
+                                .filter(s -> s.getUser().getId().equals(rec.getUserId()))
+                                .findFirst()
+                                .orElse(null);
+                        if (cs != null) {
+                            CandidateAnalysis analysis = new CandidateAnalysis();
+                            analysis.user = cs.getUser();
+                            analysis.score = cs;
+                            analysis.recommendationScore = rec.getRecommendationScore() != null ? rec.getRecommendationScore() : 0.0;
+                            analysis.performanceComponent = rec.getPerformanceComponent() != null ? rec.getPerformanceComponent() : 0.0;
+                            analysis.availabilityComponent = rec.getAvailabilityComponent() != null ? rec.getAvailabilityComponent() : 0.0;
+                            analysis.expertiseComponent = rec.getExpertiseComponent() != null ? rec.getExpertiseComponent() : 0.0;
+                            analysis.penaltyBonusComponent = rec.getPenaltyBonusComponent() != null ? rec.getPenaltyBonusComponent() : 0.0;
+                            analysis.reasoning = "[Qwen AI Engine] " + (rec.getReasoning() != null ? rec.getReasoning() : "");
+                            analysis.strengths = rec.getStrengths() != null ? rec.getStrengths() : new ArrayList<>();
+                            analysis.concerns = rec.getConcerns() != null ? rec.getConcerns() : new ArrayList<>();
+                            candidates.add(analysis);
+                        }
+                    }
+                    if (!candidates.isEmpty()) {
+                        usedQwen = true;
+                        logger.info("Successfully generated assignee recommendations using Qwen AI.");
+                    }
+                }
+            }
+        }
+
+        if (!usedQwen) {
+            logger.info("Using local heuristic engine for task assignment (Qwen either disabled, unconfigured, or failed).");
+            candidates = analyzeCandidates(task, project, scores, request);
+            for (CandidateAnalysis candidate : candidates) {
+                candidate.reasoning = "[Fallback Engine] " + candidate.reasoning;
+            }
+        }
 
         // 5. Rank candidates by recommendation score
         candidates.sort((a, b) -> Double.compare(b.recommendationScore, a.recommendationScore));

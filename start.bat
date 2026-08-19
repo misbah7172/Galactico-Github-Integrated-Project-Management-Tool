@@ -17,7 +17,7 @@ docker-compose up --build -d
 
 echo.
 echo 🎉 AutoTrack is starting with Cloudflare tunnel!
-echo 📱 Local access: http://localhost:5000
+echo 📱 Local access: https://brings-broadcasting-tucson-fioricet.trycloudflare.com
 echo 🌐 Public access: Check Docker logs for your Cloudflare tunnel URL
 echo.
 echo 📋 To view logs: docker-compose logs -f autotrack-app
@@ -27,7 +27,7 @@ echo ⏳ Waiting for application to be ready...
 
 REM Wait for health check
 for /L %%i in (1,1,30) do (
-    curl -f http://localhost:5000/actuator/health >nul 2>&1
+    curl -f https://brings-broadcasting-tucson-fioricet.trycloudflare.com/actuator/health >nul 2>&1
     if not errorlevel 1 (
         echo ✅ Application is ready!
         echo 🌐 Check the logs above for your Cloudflare tunnel URL
