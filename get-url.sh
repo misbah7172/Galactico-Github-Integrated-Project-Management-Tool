@@ -26,7 +26,7 @@ if [ -n "$TUNNEL_URL" ]; then
     echo "🔗 Quick links:"
     echo "   🏠 Home: $TUNNEL_URL"
     echo "   ❤️  Health: $TUNNEL_URL/actuator/health"
-    echo "   📊 Local: http://localhost:5000"
+    echo "   📊 Local: https://brings-broadcasting-tucson-fioricet.trycloudflare.com"
 else
     echo "⏳ Tunnel URL not found yet. Container might still be starting..."
     echo "📋 Showing recent logs:"

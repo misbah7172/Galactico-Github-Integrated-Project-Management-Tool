@@ -50,6 +50,8 @@ class AITaskAssignmentServiceTest {
     private NotificationService notificationService;
     @Mock
     private SlackService slackService;
+    @Mock
+    private QwenAIService qwenAIService;
 
     private AITaskAssignmentService assignmentService;
 
@@ -64,7 +66,7 @@ class AITaskAssignmentServiceTest {
         assignmentService = new AITaskAssignmentService(
                 taskRepository, projectRepository, userRepository,
                 scoringService, contributionScoreRepository, decisionRepository,
-                taskService, notificationService, slackService
+                taskService, notificationService, slackService, qwenAIService
         );
 
         // Create test project

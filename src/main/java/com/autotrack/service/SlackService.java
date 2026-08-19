@@ -147,6 +147,21 @@ public class SlackService {
     }
     
     /**
+     * Send a task assignee change notification to Slack.
+     * 
+     * @param taskTitle The task title
+     * @param featureCode The feature code
+     * @param oldAssigneeName The old assignee name
+     * @param newAssigneeName The new assignee name
+     */
+    @Async
+    public void sendTaskAssigneeChangedNotification(String taskTitle, String featureCode, String oldAssigneeName, String newAssigneeName) {
+        String message = String.format("🔄 Task '%s: %s' assignee changed from %s to %s.", 
+            featureCode, taskTitle, oldAssigneeName, newAssigneeName);
+        sendMessage(message);
+    }
+    
+    /**
      * Get emoji for task status.
      * 
      * @param status The task status

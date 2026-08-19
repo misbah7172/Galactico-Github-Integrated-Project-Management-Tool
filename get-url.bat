@@ -29,8 +29,8 @@ if exist temp_url.txt (
         echo    Authorization callback URL: [TUNNEL_URL]/login/oauth2/code/github
         echo.
         echo 🔗 Quick access:
-        echo    📊 Local: http://localhost:5000
-        echo    ❤️  Health: http://localhost:5000/actuator/health
+        echo    📊 Local: https://brings-broadcasting-tucson-fioricet.trycloudflare.com
+        echo    ❤️  Health: https://brings-broadcasting-tucson-fioricet.trycloudflare.com/actuator/health
     ) else (
         echo ⏳ Tunnel URL not found yet. Container might still be starting...
         echo 📋 Showing recent logs:

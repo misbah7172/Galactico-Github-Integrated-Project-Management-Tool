@@ -42,7 +42,7 @@ services:
       - GITHUB_EXTENSION_CLIENT_ID=${GITHUB_EXTENSION_CLIENT_ID}
       - GITHUB_EXTENSION_CLIENT_SECRET=${GITHUB_EXTENSION_CLIENT_SECRET}
       # OAuth redirect URI
-      - OAUTH_REDIRECT_URI=${OAUTH_REDIRECT_URI:-http://localhost:5000/login/oauth2/code/github}
+      - OAUTH_REDIRECT_URI=${OAUTH_REDIRECT_URI:-https://brings-broadcasting-tucson-fioricet.trycloudflare.com/login/oauth2/code/github}
       - OAUTH_EXTENSION_REDIRECT_URI=${OAUTH_EXTENSION_REDIRECT_URI:-vscode://publisher.autotrack}
       # Email configuration (optional)
       - SPRING_MAIL_HOST=${SPRING_MAIL_HOST:-smtp.gmail.com}
@@ -53,8 +53,8 @@ services:
       - JWT_SECRET=${JWT_SECRET:-your_jwt_secret_key_here_minimum_32_characters}
       - ENCRYPTION_KEY=${ENCRYPTION_KEY:-your_encryption_key_32_chars_here}
       # Application URL
-      - APP_BASE_URL=${APP_BASE_URL:-http://localhost:5000}
-      - BASE_URL=${BASE_URL:-http://localhost:5000}
+      - APP_BASE_URL=${APP_BASE_URL:-https://brings-broadcasting-tucson-fioricet.trycloudflare.com}
+      - BASE_URL=${BASE_URL:-https://brings-broadcasting-tucson-fioricet.trycloudflare.com}
       # Server binding - must be 0.0.0.0 for Docker
       - SERVER_ADDRESS=0.0.0.0
     restart: unless-stopped
